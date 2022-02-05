@@ -16,21 +16,21 @@ pub fn input() -> String {
     let _=stdout().flush();
 
     //::io::stdin::read_line(&mut line).expect("error: unable to read user input");
-    std::io::stdin().read_line(&mut line).expect("Something went wrong, ending program");
-    String::from(line.trim())
-    // match std::io::stdin().read_line(&mut line) {
-    //     Ok(a) => {
-    //         if let Some('\n')=line.chars().next_back() {
-    //             line.pop();
-    //         }
-    //         if let Some('\r')=line.chars().next_back() {
-    //             line.pop();
-    //         }
-    //         line
-    //     }
-    //     Err(e) => {panic!("An error occurred getting user input from this console.\nThe \
-    //     program will now terminate.\nERROR: {}", e)}
-    // }
+    // std::io::stdin().read_line(&mut line).expect("Something went wrong, ending program");
+    // String::from(line.trim())
+    match std::io::stdin().read_line(&mut line) {
+        Ok(a) => {
+            if let Some('\n')=line.chars().next_back() {
+                line.pop();
+            }
+            if let Some('\r')=line.chars().next_back() {
+                line.pop();
+            }
+            line
+        }
+        Err(e) => {panic!("An error occurred getting user input from this console.\nThe \
+        program will now terminate.\nERROR: {}", e)}
+    }
 }
 
 pub fn input_valid(validator: fn(&String) -> Result<(), String>, prompt: &'static str) {
@@ -67,6 +67,12 @@ pub fn input_parse<T>(parser: fn(&String) -> Result<T, String>,
             }
         }
     }
+}
+
+pub fn input_prompt(prompt: &'static str) -> String {
+    println!("{}", prompt);
+    print!(" > ");
+    input()
 }
 
 pub fn input_choice(prompt: &'static str, choices: Vec<Choice>) {
