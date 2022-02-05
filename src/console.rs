@@ -17,7 +17,7 @@ pub fn input() -> String {
 
     //::io::stdin::read_line(&mut line).expect("error: unable to read user input");
     std::io::stdin().read_line(&mut line).expect("Something went wrong, ending program");
-    line
+    String::from(line.trim())
     // match std::io::stdin().read_line(&mut line) {
     //     Ok(a) => {
     //         if let Some('\n')=line.chars().next_back() {
@@ -73,15 +73,16 @@ pub fn input_choice(prompt: &'static str, choices: Vec<Choice>) {
     let mut next: Option<fn()> = None;
 
     while next.is_none() {
-        println!("{}", prompt);
+        println!("\n{}", prompt);
         print!(" > ");
         let choice = input();
         let mut i = 0;
         while i < choices.len() {
-            if choices[i].name == choice.trim().to_lowercase() {
+            if choices[i].name.to_lowercase() == choice.trim().to_lowercase() {
                 next = Some(choices[i].on);
                 i = choices.len();
             }
+            i += 1;
         }
         if next.is_none() {
             println!("Invalid Input");
